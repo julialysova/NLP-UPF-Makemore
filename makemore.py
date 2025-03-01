@@ -129,6 +129,7 @@ for i in range(200000):
 
 # Plot training loss over time
 plt.plot(stepi, lossi)
+plt.show()
 
 loss_tr = compute_loss(Xtr, Ytr, C, W1, b1, W2, b2)
 print("English model training loss:", loss_tr)
@@ -147,6 +148,7 @@ plt.scatter(C[:,0].data, C[:,1].data, s=200)
 for i in range(C.shape[0]):
     plt.text(C[i,0].item(), C[i,1].item(), itos[i], ha="center", va="center", color='white')
 plt.grid('minor')
+plt.show()
 
 # GENERATION
 # sample from the model
@@ -249,6 +251,7 @@ for i in range(200000):
   ru_lossi.append(ru_loss.log10().item())
 
 plt.plot(ru_stepi, ru_lossi)
+plt.show()
 
 
 # Training loss
@@ -269,6 +272,7 @@ plt.scatter(ru_C[:,0].data, ru_C[:,1].data, s=200)
 for i in range(ru_C.shape[0]):
     plt.text(ru_C[i,0].item(), ru_C[i,1].item(), ru_itos[i], ha="center", va="center", color='white')
 plt.grid('minor')
+plt.show()
 
 # GENERATION
 # sample from the model
