@@ -50,6 +50,7 @@ def compute_loss(X, Y, C, W1, b1, W2, b2):
 
 # ENGLISH DATASET
 star_names = open('eng_star_names.txt', 'r').read().splitlines() # Getting names list form a .txt
+star_names = [name.lower() for name in star_names]
 
 print(star_names[:8])
 
@@ -177,6 +178,7 @@ for _ in range(20):
 
 # RUSSIAN DATASET
 ru_star_names = open('russian_star_names.txt', 'r').read().splitlines() # Getting names list form a .txt
+ru_star_names = [name.lower() for name in ru_star_names]
 
 print(ru_star_names[:8])
 
@@ -203,11 +205,11 @@ ru_Xte, ru_Yte = build_dataset(ru_star_names[ru_n2:], block_size, ru_stoi)
 # RUSSIAN MODEL
 # Initialize model parameters with random values
 ru_g = torch.Generator().manual_seed(42) # Set random seed for reproducibility
-ru_C = torch.randn((80, 10), generator=ru_g) # Character embedding matrix
+ru_C = torch.randn((len(ru_stoi), 10), generator=ru_g) # Character embedding matrix
 ru_W1 = torch.randn((30, 200), generator=ru_g) # First layer weights
 ru_b1 = torch.randn(200, generator=ru_g) # First layer biases
-ru_W2 = torch.randn((200,80), generator=ru_g) # Second layer weights
-ru_b2 = torch.randn(80, generator=ru_g) # Second layer biases
+ru_W2 = torch.randn((200,len(ru_stoi)), generator=ru_g) # Second layer weights
+ru_b2 = torch.randn(len(ru_stoi), generator=ru_g) # Second layer biases
 
 # List of parameters to be optimized
 ru_parameters = [ru_C, ru_W1, ru_b1, ru_W2, ru_b2]
@@ -309,7 +311,7 @@ for _ in range(20):
       ru_logits1 = ru_h1 @ ru_W2 + ru_b2
       ru_probs1 = F.softmax(ru_logits1, dim=1)
       ru_ix1 = torch.multinomial(ru_probs1, num_samples=1, generator=ru_g).item()
-      ru_ix1 = min(ru_ix1, 58) # Ensure the index does not exceed the vocabulary size (58 is the max valid index in English characters set)
+      ru_ix1 = min(ru_ix1, 33) # Ensure the index does not exceed the vocabulary size (58 is the max valid index in English characters set)
       ru_context1 = ru_context1[1:] + [ru_ix1]
       ru_out1.append(ru_ix1)
       if (ru_ix1 == 0):
@@ -352,7 +354,7 @@ ru_emb1 = ru_C[ru_Xtr] # getting a Russian embedding matrix of training dataset 
 h1 = torch.tanh(ru_emb1.view(-1, 30) @ W1 + b1) # (32, 100)
 logits_tr1 = h1 @ W2 + b2 # (32, 27)
 # Clip target indices to be within the valid range for the English model
-ru_Ytr_clipped = torch.clamp(ru_Ytr, 0, 58)
+ru_Ytr_clipped = torch.clamp(ru_Ytr, 0, 33)
 loss_tr1 = F.cross_entropy(logits_tr1, ru_Ytr_clipped)
 
 print("English model on Russian training dataset loss:", loss_tr1)

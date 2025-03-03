@@ -20,14 +20,14 @@ for table in tables:
             star_name = cols[0].get_text(strip=True)  # First column contains the name
             russian_star_names.append(star_name)
 
-# Print or save the star names
-print(russian_star_names)
-
+# Remove references in square brackets and filter out names with Latin characters
 ru_star_names_clean = []
 for name in russian_star_names:
-    name = re.sub(r'\[.+?\]', '', name)
-    ru_star_names_clean.append(name)
+    name = re.sub(r'\[.+?\]', '', name)  # Remove references
+    if not re.search(r'[A-Za-z]', name):  # Keep only names without Latin characters
+        ru_star_names_clean.append(name)
 
+# Print or save the cleaned star names
 print("--"*80)
 print(ru_star_names_clean)
 
@@ -36,7 +36,7 @@ filename = "russian_star_names.txt"
 
 # Save the list to a text file
 with open(filename, "w", encoding="utf-8") as file:
-    for name in ru_star_names_clean:  # or use `star_names` for the English list
-        file.write(name + "\n")  # Write each name on a new line
+    for name in ru_star_names_clean:
+        file.write(name + "\n")
 
 print(f"Saved {len(ru_star_names_clean)} star names to {filename}")
