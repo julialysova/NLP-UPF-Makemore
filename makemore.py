@@ -49,7 +49,7 @@ def compute_loss(X, Y, C, W1, b1, W2, b2):
 # .................ENGLISH STAR NAMES.................
 
 # ENGLISH DATASET
-star_names = open('eng_star_names.txt', 'r').read().splitlines() # Getting names list form a .txt
+star_names = open('eng_star_names.txt', 'r', encoding='utf-8').read().splitlines() # Getting names list form a .txt
 star_names = [name.lower() for name in star_names]
 
 print(star_names[:8])
@@ -177,7 +177,7 @@ for _ in range(20):
 # .................RUSSIAN STAR NAMES.................
 
 # RUSSIAN DATASET
-ru_star_names = open('russian_star_names.txt', 'r').read().splitlines() # Getting names list form a .txt
+ru_star_names = open('russian_star_names.txt', 'r', encoding='utf-8').read().splitlines() # Getting names list form a .txt
 ru_star_names = [name.lower() for name in ru_star_names]
 
 print(ru_star_names[:8])
