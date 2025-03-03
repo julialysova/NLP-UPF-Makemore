@@ -234,9 +234,9 @@ for i in range(200000):
   ru_ix = torch.randint(0, ru_Xtr.shape[0], (64,))
 
   # forward pass
-  ru_emb = ru_C[ru_Xtr[ru_ix]] # (32, 3, 2)
-  ru_h = torch.tanh(ru_emb.view(-1, block_size * embedding_dim) @ ru_W1 + ru_b1) # (32, 100)
-  ru_logits = ru_h @ ru_W2 + ru_b2 # (32, 27)
+  ru_emb = ru_C[ru_Xtr[ru_ix]] 
+  ru_h = torch.tanh(ru_emb.view(-1, block_size * embedding_dim) @ ru_W1 + ru_b1)
+  ru_logits = ru_h @ ru_W2 + ru_b2 
   ru_loss = F.cross_entropy(ru_logits, ru_Ytr[ru_ix])
 
   # backward pass
@@ -286,7 +286,7 @@ for _ in range(20):
     ru_out = []
     ru_context = [0] * block_size # initialize with all ...
     while True:
-      ru_emb = ru_C[torch.tensor([ru_context])] # (1,block_size,d)
+      ru_emb = ru_C[torch.tensor([ru_context])] 
       ru_h = torch.tanh(ru_emb.view(1, -1) @ ru_W1 + ru_b1)
       ru_logits = ru_h @ ru_W2 + ru_b2
       ru_probs = F.softmax(ru_logits, dim=1)
@@ -351,8 +351,8 @@ for _ in range(20):
 # English model on Russian training dataset loss
 
 ru_emb1 = ru_C[ru_Xtr] # getting a Russian embedding matrix of training dataset size
-h1 = torch.tanh(ru_emb1.view(-1, 30) @ W1 + b1) # (32, 100)
-logits_tr1 = h1 @ W2 + b2 # (32, 27)
+h1 = torch.tanh(ru_emb1.view(-1, 30) @ W1 + b1) 
+logits_tr1 = h1 @ W2 + b2
 # Clip target indices to be within the valid range for the English model
 ru_Ytr_clipped = torch.clamp(ru_Ytr, 0, 33)
 loss_tr1 = F.cross_entropy(logits_tr1, ru_Ytr_clipped)
