@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt # for making figures
 import random
 random.seed(42)
+torch.manual_seed(42)  
 
 # Function for building a dataset
 def build_dataset(words, block_size, stoi):
